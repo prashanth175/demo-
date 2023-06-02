@@ -1,0 +1,210 @@
+prototyype-design pattern
+
+
+There 2 types of cloning
+(a) Shallow Cloning (b) Deep Cloning
+In shallow cloning, only primitive properties of an object are cloned but its reference type is not cloned.
+In deep cloning, both primitive types and also reference types of an object are cloned
+
+
+shallow-cloning
+---------------
+-----------------------Employee.java---------------------------------
+public class Employee implements Cloneable {
+private int empno;
+private String name;
+private Department dept;
+public Employee(int empno, String name, Department dept) {
+	super();
+	this.empno = empno;
+	this.name = name;
+	this.dept = dept;
+}
+public int getEmpno() {
+	return empno;
+}
+public void setEmpno(int empno) {
+	this.empno = empno;
+}
+public String getName() {
+	return name;
+}
+public void setName(String name) {
+	this.name = name;
+}
+public Department getDept() {
+	return dept;
+}
+public void setDept(Department dept) {
+	this.dept = dept;
+}
+@Override
+	protected Object clone() throws CloneNotSupportedException {
+		
+		return super.clone();
+	}
+
+
+}
+-------------------------Department.java-------------------------
+public class Department {
+	private int deptId;
+	private String deptName;
+	public int getDeptId() {
+		return deptId;
+	}
+	public void setDeptId(int deptId) {
+		this.deptId = deptId;
+	}
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+	public Department(int deptId, String deptName) {
+		super();
+		this.deptId = deptId;
+		this.deptName = deptName;
+	}
+	@Override
+	public String toString() {
+		return "Department [deptId=" + deptId + ", deptName=" + deptName + "]";
+	}
+
+}
+-----------------------------------------------------------------------------------------
+
+public class TestCloning 
+	{
+public static void main(String[] args) throws Exception 
+{
+Department hr= new Department(10,"Human resource");
+
+Employee original= new Employee(1, "ram",hr);
+Employee cloned=(Employee)original.clone();
+System.out.println(original.getEmpno()+"\t"+original.getName()+"\t"+original.getDept());
+System.out.println(cloned.getEmpno()+"\t"+cloned.getName()+"\t"+cloned.getDept());
+cloned.getDept().setDeptName("finance");
+System.out.println("-----------------------------------");
+System.out.println(original.getEmpno()+"\t"+original.getName()+"\t"+original.getDept());
+System.out.println(cloned.getEmpno()+"\t"+cloned.getName()+"\t"+cloned.getDept());
+
+
+		
+	}
+
+}
+=========================================================================
+deep cloning
+============
+public class Department  implements Cloneable {
+	private int deptId;
+	private String deptName;
+	public int getDeptId() {
+		return deptId;
+	}
+	public void setDeptId(int deptId) {
+		this.deptId = deptId;
+	}
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+	public Department(int deptId, String deptName) {
+		super();
+		this.deptId = deptId;
+		this.deptName = deptName;
+	}
+	@Override
+	public String toString() {
+		return "Department [deptId=" + deptId + ", deptName=" + deptName + "]";
+	}
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return super.clone();
+	}
+	
+	
+	
+}
+---------------------------------------------------------------------------
+public class Employee implements Cloneable {
+private int empno;
+private String name;
+private Department dept;
+public Employee(int empno, String name, Department dept) {
+	super();
+	this.empno = empno;
+	this.name = name;
+	this.dept = dept;
+}
+public int getEmpno() {
+	return empno;
+}
+public void setEmpno(int empno) {
+	this.empno = empno;
+}
+public String getName() {
+	return name;
+}
+public void setName(String name) {
+	this.name = name;
+}
+public Department getDept() {
+	return dept;
+}
+public void setDept(Department dept) {
+	this.dept = dept;
+}
+@Override
+	protected Object clone() throws CloneNotSupportedException {
+		
+	Employee cloned=(Employee)super.clone();
+	cloned.setDept((Department)cloned.getDept().clone());
+	return cloned;
+}
+}
+---------------------------------------------------------------------------
+
+public class TestCloning 
+	{
+public static void main(String[] args) throws Exception 
+{
+Department hr= new Department(10,"Human resource");
+
+Employee original= new Employee(1, "ram",hr);
+Employee cloned=(Employee)original.clone();
+System.out.println(original.getEmpno()+"\t"+original.getName()+"\t"+original.getDept());
+System.out.println(cloned.getEmpno()+"\t"+cloned.getName()+"\t"+cloned.getDept());
+cloned.getDept().setDeptName("finance");
+System.out.println("-----------------------------------");
+System.out.println(original.getEmpno()+"\t"+original.getName()+"\t"+original.getDept());
+System.out.println(cloned.getEmpno()+"\t"+cloned.getName()+"\t"+cloned.getDept());
+
+
+		
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
